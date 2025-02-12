@@ -5,3 +5,4 @@ pytz==2025.1
 redis==5.2.1
 Requests==2.32.3
 gunicorn
+Flask-Cors==5.0.0
