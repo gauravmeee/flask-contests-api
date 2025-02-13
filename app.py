@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_restful import Api, Resource
 from flask_cors import CORS  # Import CORS
-import scrap
+import contest_scrap
 
 app = Flask(__name__)
 CORS(app)
@@ -11,7 +11,7 @@ api = Api(app)
 class cpAPI(Resource):
     @staticmethod
     def get():
-        return scrap.fetchContests() # Call scrap function to get latest contest data
+        return contest_scrap.fetchContests() # Call scrap function to get latest contest data
 
 # Add API resource to Flask app with endpoint '/'
 api.add_resource(cpAPI, "/") # Whenever a request is made to '/', call the cpAPI class. The get() method inside cpAPI will handle GET requests.

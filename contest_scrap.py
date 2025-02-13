@@ -40,6 +40,6 @@ def fetchContests():
     result = {"contests": contests}
 
     # Store in Redis for 30 minutes (1800 seconds)
-    redis_client.setex("contests_data", 1800, json.dumps(result)) # 604800 seconds -> 1 week cache
+    redis_client.setex("contests_data", 1800, json.dumps(result))
 
     return result
