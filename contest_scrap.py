@@ -3,11 +3,14 @@ import redis
 import json
 import os
 from platforms import atcoder, codechef, codeforces, hackerearth, hackerrank, geeksforgeeks
+from dotenv import load_dotenv
 
 
-redis_host = "gorgeous-rodent-12506.upstash.io"  # Set this in your Vercel environment variables
-redis_port = 6379
-redis_password = "ATDaAAIjcDEzNzEyOTQxM2M0ZmQ0NmI2OGZkZTk0OTk4OWY4Mzg5NXAxMA"
+load_dotenv()
+
+redis_host = os.getenv("REDIS_HOST")
+redis_port = int(os.getenv("REDIS_PORT", 6379))  # Default to 6379 if not set
+redis_password = os.getenv("REDIS_PASSWORD")
 
 redis_client = redis.StrictRedis(
     host=redis_host,
