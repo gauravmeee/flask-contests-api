@@ -22,3 +22,5 @@ def getAtCoderContests():
             atCoderContest["contestDuration"] = elements[2].text + " hours."
             atCoderContests.append(atCoderContest)
     return atCoderContests
+
+print(getAtCoderContests())

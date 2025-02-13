@@ -18,6 +18,7 @@ redis_client = redis.StrictRedis(
     ssl=True  # Enable SSL
 )
 
+# redis_client.delete("contests_data") # Uncomment to clear old cache
 def fetchContests():
     cached_data = redis_client.get("contests_data")
     if cached_data:
@@ -36,6 +37,6 @@ def fetchContests():
     result = {"contests": contests}
 
     # Store in Redis for 30 minutes (1800 seconds)
-    redis_client.setex("contests_data", 604800, json.dumps(result)) # 604800 seconds -> 1 week cache
+    redis_client.setex("contests_data", 1800, json.dumps(result)) # 604800 seconds -> 1 week cache
 
     return result

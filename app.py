@@ -13,8 +13,8 @@ class cpAPI(Resource):
     def get():
         return scrap.fetchContests() # Call scrap function to get latest contest data
 
-# Add API resource to Flask app with endpoint /api/contests
-api.add_resource(cpAPI, "/api/contests") # Whenever a request is made to /api/contests, call the cpAPI class. The get() method inside cpAPI will handle GET requests.
+# Add API resource to Flask app with endpoint '/'
+api.add_resource(cpAPI, "/") # Whenever a request is made to '/', call the cpAPI class. The get() method inside cpAPI will handle GET requests.
 
 
 if __name__ == "__main__":
