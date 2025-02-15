@@ -15,10 +15,8 @@ def getCodeforcesContests():
                 codeforcesContest["platform"] = "CodeForces"
                 codeforcesContest["contestName"] = contest["name"]
                 codeforcesContest["contestLink"] = "https://codeforces.com/contests/" + str(contest["id"])
-                codeforcesContest["startTime"] = datetime.strftime(datetime.fromtimestamp(
-                    contest["startTimeSeconds"]), '%Y-%m-%dT%H:%M:%S')
-                codeforcesContest["contestDuration"] = "0" + \
-                    str(contest["durationSeconds"]//3600) + ":00 hours."
+                codeforcesContest["startTime"] = datetime.strftime(datetime.fromtimestamp(contest["startTimeSeconds"]), '%Y-%m-%dT%H:%M:%S') + '+0530'
+                codeforcesContest["contestDuration"] = f"{int(contest['durationSeconds']) // 3600:02d}:{int((contest['durationSeconds']) % 3600) // 60:02d} hours"
                 codeforcesContests.append(codeforcesContest)
     return codeforcesContests
 print(getCodeforcesContests())
