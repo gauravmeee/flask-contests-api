@@ -16,7 +16,7 @@ def getGeeksforgeeksContests():
             geeksforgeeksContest["contestName"] = contest["name"]
             geeksforgeeksContest["contestLink"] = contest["event_entity_url"]
             geeksforgeeksContest["startTime"] = contest["start_time"] + '+0530'
-            geeksforgeeksContest["contestDuration"] = "0" + str(int(contest["total_time"])//60) + ":00 hours."
+            geeksforgeeksContest["contestDuration"] = f"{int(contest['total_time']) // 60:02}:{int(contest['total_time']) % 60:02} hours"
             geeksforgeeksContests.append(geeksforgeeksContest)
     return geeksforgeeksContests
 print(getGeeksforgeeksContests())
