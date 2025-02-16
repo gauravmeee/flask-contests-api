@@ -39,7 +39,7 @@ def fetchContests():
     contests = sorted(contests, key=lambda contest: contest['startTime'])
     result = {"contests": contests}
 
-    # Store in Redis for 30 minutes (1800 seconds)
-    redis_client.setex("contests_data", 1800, json.dumps(result))
+    # Store in Redis for 6 hour (6*60*60 seconds)
+    redis_client.setex("contests_data", 6*60*60, json.dumps(result))
 
     return result
