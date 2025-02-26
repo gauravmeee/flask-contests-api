@@ -1,45 +1,24 @@
-# Cloud Cache Upstash-Redis
-import redis
-import json
-import os
-from platforms import atcoder, codechef, codeforces, hackerearth, hackerrank, geeksforgeeks
-from dotenv import load_dotenv
+# Import required libraries
+import json  # To handle JSON data
+from platforms import atcoder, codechef, codeforces, hackerearth, hackerrank, geeksforgeeks  # Import platform-specific contest fetchers
 
-
-load_dotenv()
-
-redis_host = os.getenv("REDIS_HOST")
-redis_port = int(os.getenv("REDIS_PORT", 6379))  # Default to 6379 if not set
-redis_password = os.getenv("REDIS_PASSWORD")
-
-redis_client = redis.StrictRedis(
-    host=redis_host,
-    port=redis_port,
-    password=redis_password,
-    decode_responses=True,
-    socket_timeout=10,  # Timeout in seconds
-    ssl=True  # Enable SSL
-)
-
-# redis_client.delete("contests_data") # Uncomment to clear old cache
 def fetchContests():
-    cached_data = redis_client.get("contests_data")
-    if cached_data:
-        return json.loads(cached_data)  # Return cached results if available
+    """
+    Fetches upcoming programming contests from multiple platforms.
+    """
+    # Fetch contests from various platforms
+    contests = []  # Initialize an empty list to store contest data
+    contests.extend(codeforces.getCodeforcesContests())  # Fetch contests from Codeforces
+    contests.extend(codechef.getCodechefContests())  # Fetch contests from CodeChef
+    contests.extend(hackerrank.getHackerrankContests())  # Fetch contests from HackerRank
+    contests.extend(hackerearth.getHackerearthContests())  # Fetch contests from HackerEarth
+    contests.extend(geeksforgeeks.getGeeksforgeeksContests())  # Fetch contests from GeeksforGeeks
+    contests.extend(atcoder.getAtCoderContests())  # Fetch contests from AtCoder
 
-    # Fetch new contest data if cache is empty
-    contests = []
-    contests.extend(codeforces.getCodeforcesContests())
-    contests.extend(codechef.getCodechefContests())
-    contests.extend(hackerrank.getHackerrankContests())
-    contests.extend(hackerearth.getHackerearthContests())
-    contests.extend(geeksforgeeks.getGeeksforgeeksContests())
-    contests.extend(atcoder.getAtCoderContests())
-
+    # Sort contests by start time
     contests = sorted(contests, key=lambda contest: contest['startTime'])
+
+    # Create the final result dictionary
     result = {"contests": contests}
 
-    # Store in Redis for 6 hour (6*60*60 seconds)
-    redis_client.setex("contests_data", 6*60*60, json.dumps(result))
-
-    return result
+    return result  # Return the fetched contest data

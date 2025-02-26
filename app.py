@@ -1,24 +1,22 @@
-# Import required libraries
-import json  # To handle JSON data
-from platforms import atcoder, codechef, codeforces, hackerearth, hackerrank, geeksforgeeks  # Import platform-specific contest fetchers
+from flask import Flask, render_template
+from flask_restful import Api, Resource
+from flask_cors import CORS  # Import CORS
+import contest_scrap
 
-def fetchContests():
-    """
-    Fetches upcoming programming contests from multiple platforms.
-    """
-    # Fetch contests from various platforms
-    contests = []  # Initialize an empty list to store contest data
-    contests.extend(codeforces.getCodeforcesContests())  # Fetch contests from Codeforces
-    contests.extend(codechef.getCodechefContests())  # Fetch contests from CodeChef
-    contests.extend(hackerrank.getHackerrankContests())  # Fetch contests from HackerRank
-    contests.extend(hackerearth.getHackerearthContests())  # Fetch contests from HackerEarth
-    contests.extend(geeksforgeeks.getGeeksforgeeksContests())  # Fetch contests from GeeksforGeeks
-    contests.extend(atcoder.getAtCoderContests())  # Fetch contests from AtCoder
+app = Flask(__name__)
+CORS(app)
+api = Api(app)
 
-    # Sort contests by start time
-    contests = sorted(contests, key=lambda contest: contest['startTime'])
+# Define API resource for fetching contest data
+class cpAPI(Resource):
+    @staticmethod
+    def get():
+        return contest_scrap.fetchContests() # Call scrap function to get latest contest data
 
-    # Create the final result dictionary
-    result = {"contests": contests}
+# Add API resource to Flask app with endpoint '/'
+api.add_resource(cpAPI, "/") # Whenever a request is made to '/', call the cpAPI class. The get() method inside cpAPI will handle GET requests.
 
-    return result  # Return the fetched contest data
+
+if __name__ == "__main__":
+    # app.run(host="0.0.0.0", port=5000) # Uncomment this to run on all network interfaces
+    app.run(debug=True) # Run in debug mode (auto-restarts on code changes)
