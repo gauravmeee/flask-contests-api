@@ -41,7 +41,7 @@ def getHackerrankContests():
 print(getHackerrankContests())
 
 
-import urllib.parse
-url1 = "https://practice.geeksforgeeks.org/contest/gfg-weekly-195-rated-contest"
-url2 = "https://practice.geeksforgeeks.org/contest/gfg-weekly-195-rated-contest"
-print(urllib.parse.unquote(url1) == urllib.parse.unquote(url2))
+# import urllib.parse
+# url1 = "https://practice.geeksforgeeks.org/contest/gfg-weekly-195-rated-contest"
+# url2 = "https://practice.geeksforgeeks.org/contest/gfg-weekly-195-rated-contest"
+# print(urllib.parse.unquote(url1) == urllib.parse.unquote(url2))

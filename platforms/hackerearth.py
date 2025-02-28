@@ -50,3 +50,5 @@ def getHackerearthContests():
                     continue
 
     return hackerearthContests
+
+print(getHackerearthContests)
