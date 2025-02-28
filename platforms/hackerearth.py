@@ -1,52 +1,52 @@
 import requests
 import json
 from datetime import datetime
-from pytz import timezone
-
+import pytz
 
 def getHackerearthContests():
-    response = requests.get(
-        "https://www.hackerearth.com/chrome-extension/events/")
+    response = requests.get("https://www.hackerearth.com/chrome-extension/events/")
     hackerearthContests = []
+
     if response.status_code == 200:
         jsonResponse = json.loads(response.text)
         contests = jsonResponse["response"]
+
         for contest in contests:
-            hackerearthContest = {}
-            hackerearthContest["platform"] = "HackerEarth"
             if contest["status"] == "UPCOMING":
-                hackerearthContest["contestName"] = contest["title"]
-                hackerearthContest["contestLink"] = contest["url"]
-                start = contest["start_tz"][0: contest["start_tz"].rindex(
-                    ':')] + contest["start_tz"][contest["start_tz"].rindex(':')+1:]
-                start = start.replace(" ", "T")
-                end = contest["end_tz"].replace(" ", "T")
                 try:
-                    hackerearthContest["startTime"] = datetime.strptime(
-                        start, '%Y-%m-%dT%H:%M:%S%z').astimezone(timezone('Asia/Kolkata')).strftime('%Y-%m-%dT%H:%M:%S%z')
-                    td = datetime.strptime(
-                        end, '%Y-%m-%dT%H:%M:%S%z') - datetime.strptime(start, '%Y-%m-%dT%H:%M:%S%z')
-                    if td.days and td.seconds:
-                        hackerearthContest["contestDuration"] = str(
-                            td.days) + " Days & " + str((td.seconds)//3600) + " hours."
-                    elif td.days:
-                        hackerearthContest["contestDuration"] = str(
-                            td.days) + " Days"
-                    elif td.seconds and td.seconds > 3600:
-                        hours = ""
-                        mins = ""
-                        if (td.seconds)//3600 < 10:
-                            hours = "0" + str((td.seconds)//3600)
-                        else:
-                            hours = (td.seconds)//3600
-                        if ((td.seconds)//60) % 60 < 10:
-                            mins = "0" + str(((td.seconds)//60) % 60)
-                        else:
-                            mins = ((td.seconds)//60) % 60
-                        hackerearthContest["contestDuration"] = hours + \
-                            ":" + mins + " hours."
-                    if hackerearthContest["contestDuration"]:
-                        hackerearthContests.append(hackerearthContest)
-                except:
+                    hackerearthContest = {
+                        "platform": "HackerEarth",
+                        "contestName": contest["title"],
+                        "contestLink": contest["url"],
+                    }
+
+                    # Parse and convert times correctly
+                    utc_start = datetime.fromisoformat(contest["start_tz"].replace(" ", "T"))
+                    utc_end = datetime.fromisoformat(contest["end_tz"].replace(" ", "T"))
+
+                    # Convert UTC to IST
+                    ist_timezone = pytz.timezone("Asia/Kolkata")
+                    start_ist = utc_start.astimezone(ist_timezone).strftime('%Y-%m-%dT%H:%M:%S%z')
+
+                    hackerearthContest["startTime"] = start_ist
+
+                    # Calculate contest duration
+                    td = utc_end - utc_start
+                    days = td.days
+                    hours = td.seconds // 3600
+                    minutes = (td.seconds % 3600) // 60
+
+                    if days > 0:
+                        hackerearthContest["contestDuration"] = f"{days} Days & {hours} hours"
+                    elif hours > 0:
+                        hackerearthContest["contestDuration"] = f"{hours:02}:{minutes:02} hours"
+                    else:
+                        hackerearthContest["contestDuration"] = f"{minutes} minutes"
+
+                    hackerearthContests.append(hackerearthContest)
+
+                except Exception as e:
+                    print(f"Error processing contest {contest['title']}: {e}")
                     continue
+
     return hackerearthContests

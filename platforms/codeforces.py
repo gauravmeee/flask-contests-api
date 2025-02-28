@@ -1,6 +1,7 @@
 import requests
 import json
 from datetime import datetime
+import pytz
 
 
 def getCodeforcesContests():
@@ -15,7 +16,12 @@ def getCodeforcesContests():
                 codeforcesContest["platform"] = "CodeForces"
                 codeforcesContest["contestName"] = contest["name"]
                 codeforcesContest["contestLink"] = "https://codeforces.com/contests/" + str(contest["id"])
-                codeforcesContest["startTime"] = datetime.strftime(datetime.fromtimestamp(contest["startTimeSeconds"]), '%Y-%m-%dT%H:%M:%S') + '+0530'
+                
+                # Create datetime from UTC timestamp and convert to IST
+                utc_time = datetime.fromtimestamp(contest["startTimeSeconds"], tz=pytz.UTC)
+                ist_time = utc_time.astimezone(pytz.timezone('Asia/Kolkata'))
+                codeforcesContest["startTime"] = ist_time.strftime('%Y-%m-%dT%H:%M:%S') + '+0530'
+                
                 codeforcesContest["contestDuration"] = f"{int(contest['durationSeconds']) // 3600:02d}:{int((contest['durationSeconds']) % 3600) // 60:02d} hours"
                 codeforcesContests.append(codeforcesContest)
     return codeforcesContests
