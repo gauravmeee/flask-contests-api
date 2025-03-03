@@ -1,6 +1,6 @@
 # Import required libraries
 import json  # To handle JSON data
-from platforms import atcoder, codechef, codeforces, hackerearth, hackerrank, geeksforgeeks  # Import platform-specific contest fetchers
+from platforms import atcoder, codechef, codeforces, hackerearth, hackerrank, geeksforgeeks, leetcode  # Import platform-specific contest fetchers
 
 def fetchContests():
     """
@@ -14,6 +14,7 @@ def fetchContests():
     contests.extend(hackerearth.getHackerearthContests())  # Fetch contests from HackerEarth
     contests.extend(geeksforgeeks.getGeeksforgeeksContests())  # Fetch contests from GeeksforGeeks
     contests.extend(atcoder.getAtCoderContests())  # Fetch contests from AtCoder
+    contests.extend(leetcode.getLeetcodeContests())  # Fetch contests from LeetCode
 
     # Sort contests by start time
     contests = sorted(contests, key=lambda contest: contest['startTime'])
