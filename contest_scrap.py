@@ -11,7 +11,7 @@ def fetchContests():
     contests.extend(codeforces.getCodeforcesContests())  # Fetch contests from Codeforces
     contests.extend(codechef.getCodechefContests())  # Fetch contests from CodeChef
     contests.extend(hackerrank.getHackerrankContests())  # Fetch contests from HackerRank
-    # contests.extend(hackerearth.getHackerearthContests())  # Fetch contests from HackerEarth
+    contests.extend(hackerearth.getHackerearthContests())  # Fetch contests from HackerEarth
     contests.extend(geeksforgeeks.getGeeksforgeeksContests())  # Fetch contests from GeeksforGeeks
     contests.extend(atcoder.getAtCoderContests())  # Fetch contests from AtCoder
 

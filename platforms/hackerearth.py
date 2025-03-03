@@ -20,18 +20,18 @@ def getHackerearthContests():
                         "contestLink": contest["url"],
                     }
 
-                    # Parse and convert times correctly
-                    utc_start = datetime.fromisoformat(contest["start_tz"].replace(" ", "T"))
-                    utc_end = datetime.fromisoformat(contest["end_tz"].replace(" ", "T"))
+                    # The start_tz is already in IST format with timezone offset
+                    start_time = contest["start_tz"]
+                    end_time = contest["end_tz"]
 
-                    # Convert UTC to IST
-                    ist_timezone = pytz.timezone("Asia/Kolkata")
-                    start_ist = utc_start.astimezone(ist_timezone).strftime('%Y-%m-%dT%H:%M:%S%z')
-
-                    hackerearthContest["startTime"] = start_ist
+                    # Store the start time directly since it's already in IST
+                    hackerearthContest["startTime"] = start_time
 
                     # Calculate contest duration
-                    td = utc_end - utc_start
+                    start_dt = datetime.fromisoformat(start_time.replace(" ", "T"))
+                    end_dt = datetime.fromisoformat(end_time.replace(" ", "T"))
+                    
+                    td = end_dt - start_dt
                     days = td.days
                     hours = td.seconds // 3600
                     minutes = (td.seconds % 3600) // 60
@@ -49,6 +49,6 @@ def getHackerearthContests():
                     print(f"Error processing contest {contest['title']}: {e}")
                     continue
 
-    return hackerearthContests
+    return hackerearthContests 
 
-print(getHackerearthContests)
+print(getHackerearthContests())
