@@ -3,8 +3,22 @@ from flask_restful import Api, Resource
 from flask_cors import CORS  # Import CORS
 import contest_scrap
 
+
 app = Flask(__name__)
-CORS(app)
+# Configure CORS with specific settings
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://mycodebank.vercel.app",  # Your production frontend
+            "http://localhost:3000",          # Local development
+            "http://127.0.0.1:3000"          # Alternative local development
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Accept"],
+        "supports_credentials": True
+    }
+})
+
 api = Api(app)
 
 # Define API resource for fetching contest data
