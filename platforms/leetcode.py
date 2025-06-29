@@ -69,10 +69,10 @@ def getLeetcodeContests():
                         ist_time = start_time.astimezone(ist_timezone)
                         
                         # Format duration
-                        duration_minutes = contest["duration"]
-                        hours = duration_minutes // 60
-                        minutes = duration_minutes % 60
-                        duration_str = f"{hours}:{minutes:02} hours" if hours > 0 else f"{minutes} minutes"
+                        duration_seconds = contest["duration"]
+                        hours = duration_seconds // 3600
+                        minutes = (duration_seconds % 3600) // 60
+                        duration_str = f"{hours:02d}:{minutes:02d} hours"
                         
                         # Create contest object
                         leetcodeContest = {
