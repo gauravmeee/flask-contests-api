@@ -18,6 +18,7 @@ def getGeeksforgeeksContests():
             geeksforgeeksContest["startTime"] = contest["start_time"] + '+0530'
             duration = datetime.strptime(contest["end_time"], "%Y-%m-%dT%H:%M:%S") - datetime.strptime(contest["start_time"], "%Y-%m-%dT%H:%M:%S")
             geeksforgeeksContest["contestDuration"] = f"{int(duration.total_seconds()) // 3600:02d}:{int((duration.total_seconds()) % 3600) // 60:02d} hours"
-            geeksforgeeksContests.append(geeksforgeeksContest)
+            if duration.days<=7: # to exlcude out contest such as "quantitative aptitude" which are one year long
+             geeksforgeeksContests.append(geeksforgeeksContest)
     return geeksforgeeksContests
 print(getGeeksforgeeksContests())
